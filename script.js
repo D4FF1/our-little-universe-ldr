@@ -33,6 +33,10 @@ const copyStatus = document.getElementById("copyStatus");
 const toast = document.getElementById("toast");
 let lastReminderIndex = 0;
 let toastTimeout;
+let reminderTimeout;
+let surpriseCooldown = false;
+let lastPointerSparkle = 0;
+const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
 function showToast(message) {
   toast.textContent = message;
@@ -59,13 +63,45 @@ function createStars() {
     star.style.setProperty("--size", `${index % 4 === 0 ? 23 : 16 + (index % 3) * 3}px`);
     star.style.setProperty("--duration", `${2.2 + (index % 5) * 0.45}s`);
     star.setAttribute("aria-label", `Buka pesan bintang ${index + 1}`);
+    star.setAttribute("aria-pressed", "false");
     star.addEventListener("click", () => {
-      const message = skyMessages[index % skyMessages.length];
-      skyMessage.innerHTML = `<span class="message-symbol">✧</span><p></p>`;
-      skyMessage.querySelector("p").textContent = message;
+      starField.querySelectorAll(".sky-star").forEach(item => {
+        item.classList.remove("is-picked");
+        item.setAttribute("aria-pressed", "false");
+      });
+      star.classList.add("is-picked");
+      star.setAttribute("aria-pressed", "true");
+      window.setTimeout(() => star.classList.remove("is-picked"), 850);
+      sparkleAt(star.getBoundingClientRect(), 5);
+      skyMessage.classList.add("is-changing");
+      window.clearTimeout(skyMessageTimeout);
+      skyMessageTimeout = window.setTimeout(() => {
+        const message = skyMessages[index % skyMessages.length];
+        skyMessage.innerHTML = `<span class="message-symbol">✧</span><p></p>`;
+        skyMessage.querySelector("p").textContent = message;
+        skyMessage.classList.remove("is-changing");
+      }, reduceMotion.matches ? 0 : 160);
     });
     starField.appendChild(star);
   });
+}
+
+let skyMessageTimeout;
+
+function sparkleAt(rect, count = 4, symbols = ["✦", "✧", "·"]) {
+  const originX = rect.left + rect.width / 2;
+  const originY = rect.top + rect.height / 2;
+  for (let i = 0; i < count; i++) {
+    const sparkle = document.createElement("span");
+    sparkle.className = "tiny-sparkle";
+    sparkle.textContent = symbols[i % symbols.length];
+    sparkle.style.left = `${originX}px`;
+    sparkle.style.top = `${originY}px`;
+    sparkle.style.setProperty("--dx", `${(Math.random() - 0.5) * 64}px`);
+    sparkle.style.setProperty("--dy", `${(Math.random() - 0.5) * 64}px`);
+    document.body.appendChild(sparkle);
+    window.setTimeout(() => sparkle.remove(), 750);
+  }
 }
 
 function pickReminder() {
@@ -74,7 +110,12 @@ function pickReminder() {
     index = (index + 1) % reminders.length;
   }
   lastReminderIndex = index;
-  reminderText.textContent = reminders[index];
+  reminderText.classList.add("is-changing");
+  window.clearTimeout(reminderTimeout);
+  reminderTimeout = window.setTimeout(() => {
+    reminderText.textContent = reminders[index];
+    reminderText.classList.remove("is-changing");
+  }, reduceMotion.matches ? 0 : 180);
   copyStatus.textContent = "Simpan pesan yang kamu suka.";
 }
 
@@ -83,6 +124,9 @@ async function copyCurrentReminder() {
   try {
     await navigator.clipboard.writeText(text);
     copyStatus.textContent = "Pesan berhasil disalin. ♡";
+    copyStatus.classList.remove("copy-pop");
+    void copyStatus.offsetWidth;
+    copyStatus.classList.add("copy-pop");
   } catch {
     const field = document.createElement("textarea");
     field.value = text;
@@ -94,22 +138,46 @@ async function copyCurrentReminder() {
     const copied = document.execCommand("copy");
     field.remove();
     copyStatus.textContent = copied ? "Pesan berhasil disalin. ♡" : "Kamu bisa menyalin pesan ini secara manual.";
+    if (copied) {
+      copyStatus.classList.remove("copy-pop");
+      void copyStatus.offsetWidth;
+      copyStatus.classList.add("copy-pop");
+    }
   }
 }
 
 function heartBurst() {
+  if (surpriseCooldown) return;
+  surpriseCooldown = true;
+  const button = document.getElementById("surpriseButton");
+  const rect = button.getBoundingClientRect();
+  button.disabled = true;
   const symbols = ["♡", "♥", "✦", "✧"];
-  for (let i = 0; i < 18; i++) {
+  for (let i = 0; i < 16; i++) {
     const heart = document.createElement("span");
     heart.className = "heart-float";
     heart.textContent = symbols[Math.floor(Math.random() * symbols.length)];
-    heart.style.left = `${10 + Math.random() * 80}%`;
-    heart.style.top = `${45 + Math.random() * 35}%`;
-    heart.style.animationDelay = `${Math.random() * 0.45}s`;
+    heart.style.left = `${rect.left + rect.width / 2}px`;
+    heart.style.top = `${rect.top + rect.height / 2}px`;
+    heart.style.setProperty("--dx", `${(Math.random() - 0.5) * 200}px`);
+    heart.style.setProperty("--dy", `${-70 - Math.random() * 120}px`);
+    heart.style.animationDelay = `${Math.random() * 0.18}s`;
     document.body.appendChild(heart);
-    window.setTimeout(() => heart.remove(), 2400);
+    window.setTimeout(() => heart.remove(), 1900);
   }
+  const mascot = document.createElement("span");
+  mascot.className = "surprise-mascot";
+  mascot.setAttribute("aria-hidden", "true");
+  mascot.textContent = "♥";
+  mascot.style.left = `${rect.left + rect.width / 2}px`;
+  mascot.style.top = `${rect.top + rect.height / 2}px`;
+  document.body.appendChild(mascot);
+  window.setTimeout(() => mascot.remove(), 1100);
   showToast("Kejutan kecil, khusus buat Sayang. ♡");
+  window.setTimeout(() => {
+    surpriseCooldown = false;
+    button.disabled = false;
+  }, 1500);
 }
 
 const menuToggle = document.getElementById("menuToggle");
@@ -123,6 +191,7 @@ nav?.querySelectorAll("a").forEach(link => {
   link.addEventListener("click", () => {
     nav.classList.remove("open");
     menuToggle?.setAttribute("aria-expanded", "false");
+    menuToggle?.setAttribute("aria-label", "Buka navigasi");
   });
 });
 
@@ -134,7 +203,45 @@ document.getElementById("finalButton")?.addEventListener("click", () => {
   const isHidden = message.hidden;
   message.hidden = !isHidden;
   document.getElementById("finalButton").textContent = isHidden ? "Tutup pesan ♡" : "Buka pesan terakhir ♡";
-  if (isHidden) message.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  if (isHidden) {
+    message.scrollIntoView({ behavior: reduceMotion.matches ? "auto" : "smooth", block: "nearest" });
+    sparkleAt(document.getElementById("finalButton").getBoundingClientRect(), 4, ["♡", "♡", "✧"]);
+  }
 });
+
+const revealTargets = document.querySelectorAll(
+  ".intro-strip, .section-heading, .letter-card, .sky-card, .reminder-visual, .reminder-content, .closing-card"
+);
+if ("IntersectionObserver" in window && !reduceMotion.matches) {
+  const revealObserver = new IntersectionObserver((entries, observer) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      entry.target.classList.add("is-visible");
+      observer.unobserve(entry.target);
+    });
+  }, { threshold: 0.14 });
+  revealTargets.forEach((element, index) => {
+    element.classList.add("reveal-on-scroll");
+    element.style.setProperty("--reveal-delay", `${Math.min(index % 3, 2) * 90}ms`);
+    revealObserver.observe(element);
+  });
+} else {
+  revealTargets.forEach(element => element.classList.add("is-visible"));
+}
+
+if (window.matchMedia("(hover: hover) and (pointer: fine)").matches && !reduceMotion.matches) {
+  document.addEventListener("pointermove", event => {
+    const now = performance.now();
+    if (now - lastPointerSparkle < 75) return;
+    lastPointerSparkle = now;
+    const sparkle = document.createElement("span");
+    sparkle.className = "cursor-sparkle";
+    sparkle.textContent = Math.random() > 0.5 ? "✦" : "·";
+    sparkle.style.left = `${event.clientX}px`;
+    sparkle.style.top = `${event.clientY}px`;
+    document.body.appendChild(sparkle);
+    window.setTimeout(() => sparkle.remove(), 650);
+  }, { passive: true });
+}
 
 createStars();
