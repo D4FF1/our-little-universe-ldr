@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#fff5f8">
+  <meta name="description" content="A little universe made with love for Alzenna Ayra Natasya.">
+  <title>Our Little Universe ✦ For Alzenna</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500;1,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="ambient ambient-one" aria-hidden="true"></div>
+  <div class="ambient ambient-two" aria-hidden="true"></div>
+  <header class="site-header">
+    <a class="brand" href="#home" aria-label="Our Little Universe home">
+      <span class="brand-star">✦</span><span>our little universe</span>
+    </a>
+    <button class="menu-toggle" id="menuToggle" aria-label="Buka navigasi" aria-expanded="false">☰</button>
+    <nav class="nav" id="nav">
+      <a href="#letter">A little letter</a>
+      <a href="#sky">Our sky</a>
+      <a href="#little-things">Little reminders</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero section-wrap" id="home">
+      <div class="hero-copy">
+        <div class="eyebrow"><span class="eyebrow-dot"></span> a tiny place for us</div>
+        <h1>Two hearts.<br><em>One little universe.</em></h1>
+        <p class="hero-intro">Buat Alzenna Ayra Natasya — tempat kecil yang dibuat untuk mengingatkan kalau jarak bukan satu-satunya hal yang mendefinisikan kita.</p>
+        <div class="hero-actions">
+          <a class="button button-primary" href="#letter">Buka surat kecil <span aria-hidden="true">↗</span></a>
+          <button class="button button-quiet" id="surpriseButton">Kasih kejutan ✦</button>
+        </div>
+        <div class="hero-note"><span class="tiny-heart">♡</span> dibuat pelan-pelan, khusus untuk kamu</div>
+      </div>
+
+      <div class="universe-art" aria-label="Ilustrasi dua planet kecil yang terhubung oleh cahaya bintang">
+        <div class="orbit orbit-one"></div>
+        <div class="orbit orbit-two"></div>
+        <div class="planet planet-pink"><span>♡</span></div>
+        <div class="planet planet-lilac"><span>✦</span></div>
+        <div class="star star-a">✦</div><div class="star star-b">✧</div>
+        <div class="star star-c">✦</div><div class="star star-d">·</div>
+        <div class="connection"></div>
+        <div class="art-caption">different places,<br><em>same little universe</em></div>
+      </div>
+      <div class="scroll-hint"><span></span> scroll pelan-pelan</div>
+    </section>
+
+    <section class="intro-strip section-wrap">
+      <div class="strip-mark">✳</div>
+      <p>Kita mungkin belum punya foto bersama atau cerita tentang pertemuan pertama. Jadi, halaman ini bukan tentang kenangan yang belum terjadi — tapi tentang hal-hal baik yang ingin aku sampaikan <em>sekarang.</em></p>
+    </section>
+
+    <section class="letter-section section-wrap" id="letter">
+      <div class="section-heading">
+        <span class="eyebrow">01 / from me to you</span>
+        <h2>A little letter<br><em>for my favorite person.</em></h2>
+        <p>Surat yang bisa kamu buka kapan pun kamu ingin membaca sesuatu yang hangat.</p>
+      </div>
+      <article class="letter-card">
+        <div class="letter-top"><span>✦ a note for you</span><span class="letter-stamp">♡</span></div>
+        <div class="letter-content">
+          <p class="letter-greeting">Hai, Sayang.</p>
+          <p>Aku bikin halaman kecil ini buat kamu. Bukan karena aku punya banyak foto kita untuk dipajang, tapi karena ada hal-hal yang tetap ingin aku sampaikan meskipun kita belum bisa duduk bersebelahan.</p>
+          <p>Aku suka ketika kita bisa saling berkabar, ngobrol lewat telepon, atau video call saat ada waktu. Mungkin kita belum bisa berbagi tempat yang sama, tapi kita tetap bisa berbagi cerita, tawa, dan waktu dengan cara kita sendiri.</p>
+          <p>Aku nggak mau berpura-pura kalau jarak selalu gampang. Yang aku harapkan, kita bisa terus saling memahami, jujur satu sama lain, dan tetap punya ruang untuk tumbuh sebagai diri kita masing-masing.</p>
+          <p>Kalau hari ini terasa berat, semoga halaman kecil ini bisa jadi pengingat bahwa kamu layak mendapat istirahat, perhatian, dan hal-hal baik. Kamu nggak harus selalu baik-baik saja setiap saat.</p>
+          <p class="letter-signoff">Jaga diri baik-baik, ya.<br><em>Dari aku, yang sedang belajar menyayangi kamu dengan baik.</em></p>
+        </div>
+        <div class="letter-bottom"><span>sent with care</span><span>♡ ♡ ♡</span></div>
+      </article>
+    </section>
+
+    <section class="sky-section" id="sky">
+      <div class="section-wrap sky-inner">
+        <div class="section-heading centered">
+          <span class="eyebrow">02 / under the same sky</span>
+          <h2>Look up, <em>Sayang.</em></h2>
+          <p>Pilih salah satu bintang. Ada pesan kecil yang menunggu di sana.</p>
+        </div>
+        <div class="sky-card">
+          <div class="sky-topline"><span>✦ OUR SKY ✦</span><span>tap a star</span></div>
+          <div class="star-field" id="starField" aria-label="Bintang interaktif"></div>
+          <div class="sky-horizon"></div>
+          <div class="sky-message" id="skyMessage" aria-live="polite">
+            <span class="message-symbol">✧</span>
+            <p>Di antara banyak bintang, pilih satu untuk membuka pesan.</p>
+          </div>
+          <div class="sky-footer"><span>far away, but still sharing this sky</span><span>♡</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="reminders-section section-wrap" id="little-things">
+      <div class="section-heading">
+        <span class="eyebrow">03 / little reminders</span>
+        <h2>Things I hope<br><em>you remember.</em></h2>
+        <p>Tekan tombolnya kalau kamu butuh pengingat kecil hari ini.</p>
+      </div>
+      <div class="reminder-layout">
+        <div class="reminder-visual">
+          <div class="reminder-orbit"></div>
+          <div class="reminder-moon">☾</div>
+          <span class="reminder-spark spark-one">✦</span>
+          <span class="reminder-spark spark-two">✧</span>
+          <span class="reminder-spark spark-three">·</span>
+          <p>a little reminder<br><em>just for you</em></p>
+        </div>
+        <div class="reminder-content">
+          <span class="eyebrow">a note to keep</span>
+          <blockquote id="reminderText">Kamu boleh istirahat. Kamu nggak harus menyelesaikan semuanya dalam satu hari.</blockquote>
+          <div class="reminder-controls">
+            <button class="button button-primary" id="newReminder">Pesan lainnya <span aria-hidden="true">↗</span></button>
+            <button class="icon-button" id="copyReminder" aria-label="Salin pesan" title="Salin pesan">▢</button>
+          </div>
+          <p class="microcopy" id="copyStatus" aria-live="polite">Simpan pesan yang kamu suka.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="closing-section section-wrap">
+      <div class="closing-card">
+        <span class="closing-star">✦</span>
+        <p class="eyebrow">one last thing</p>
+        <h2>Until the day<br><em>we meet.</em></h2>
+        <p>Belum ada tanggal yang perlu dihitung mundur. Untuk sekarang, semoga kita bisa terus membuat hal-hal kecil yang berarti, satu hari demi satu hari.</p>
+        <button class="button button-light" id="finalButton">Buka pesan terakhir ♡</button>
+        <div class="final-message" id="finalMessage" hidden>
+          <p>Terima kasih sudah hadir di hari-hariku, Sayang. Semoga kapan pun kamu membuka halaman ini, kamu menemukan alasan kecil untuk tersenyum. Sampai nanti, saat kita punya cerita baru untuk ditulis bersama. ♡</p>
+        </div>
+      </div>
+      <footer class="footer">
+        <a class="brand footer-brand" href="#home"><span class="brand-star">✦</span><span>our little universe</span></a>
+        <p>made with care, for Alzenna ♡</p>
+        <a href="#home" class="back-top">kembali ke atas ↑</a>
+      </footer>
+    </section>
+  </main>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="script.js"></script>
+</body>
+</html>
